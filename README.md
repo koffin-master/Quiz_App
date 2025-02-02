@@ -10,6 +10,12 @@ Welcome to the Quiz App! 🎮 This is a fun and interactive web-based quiz appli
 . 📄 Report Card (Analysis of answers)
 • 🏆 Results Summary: At the end, get your total score and see how you did! 🎉 Plus, you can restart the quiz anytime! 🔄
 
+![Glipse1](https://drive.google.com/uc?id=1VkEc6uact99ndccIQ6f_4RAxlcDxlajM)
+![Glimpse2](https://drive.google.com/uc?id=1AJW06iA3fJO5OW_BND91SxAgz0UdSGhW)
+![Glimpse3](https://drive.google.com/uc?id=1cSTAz7EFpT0qDPtv_qy2AuzUM70M77b0)
+📽️ [Walkthrough](https://drive.google.com/file/d/1rOb496v8tWJ2FpUwJ5C2t5obwbFOKmX2/view?usp=sharing)
+
+
 🛠️ Technologies Used
 • React: The magic behind the frontend! ⚡
 • Axios: To fetch quiz data from the API. 📡
