@@ -82,3 +82,93 @@ button:disabled {
 .results {
   text-align: center;
 }
+
+
+
+.correct-answer {
+  background-color: #d4edda;
+  color: #155724;
+  font-weight: bold;
+  padding: 5px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.wrong-answer {
+  background-color: #f8d7da;
+  color: #721c24;
+  font-weight: bold;
+  padding: 5px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.start-screen {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.start-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.start-button:hover {
+  background-color: #218838;
+}
+
+.correct-answer {
+  background-color: #d4edda;
+  color: #155724;
+  font-weight: bold;
+  padding: 5px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.wrong-answer {
+  background-color: #f8d7da;
+  color: #721c24;
+  font-weight: bold;
+  padding: 5px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.cheerful-message {
+  font-size: 18px;
+  font-weight: bold;
+  color: #ff9800;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.report-card {
+  margin-top: 20px;
+  border-top: 2px solid #000;
+  padding-top: 10px;
+}
+
+.report-card-item {
+  margin-bottom: 15px;
+}
+
+.report-card-item p {
+  margin: 5px 0;
+}
+
+.report-card-item .correct-answer {
+  font-weight: normal;
+  color: green;
+}
+
+.report-card-item .wrong-answer {
+  font-weight: normal;
+  color: red;
+}
