@@ -8,12 +8,14 @@ const API_URL =
 const Quiz = () => {
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [quizStarted, setQuizStarted] = useState(false);
   const [selectedAnswers, setSelectedAnswers] = useState({});
-  const [timer, setTimer] = useState(30); // Timer for each question (30 seconds)
-  const [isTimerRunning, setIsTimerRunning] = useState(true);
+  const [timer, setTimer] = useState(30);
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [answeredCount, setAnsweredCount] = useState(0);
-  const [score, setScore] = useState(0); // Track score
-  const [showResults, setShowResults] = useState(false); // Show results at the end
+  const [score, setScore] = useState(0);
+  const [showResults, setShowResults] = useState(false);
+  const [showAnswer, setShowAnswer] = useState(false);
 
   // Fetch quiz data
   useEffect(() => {
@@ -35,12 +37,16 @@ const Quiz = () => {
       }, 1000);
 
       return () => clearInterval(timerInterval);
-    } else if (timer === 0) {
+    } else if (timer === 0 && !selectedAnswers[answeredCount]) {
       setIsTimerRunning(false);
-      // Automatically move to the next question after the timer ends (or end quiz)
-      handleNextQuestion();
     }
-  }, [isTimerRunning, timer]);
+  }, [isTimerRunning, timer, answeredCount, selectedAnswers]);
+
+  // Start Quiz
+  const startQuiz = () => {
+    setQuizStarted(true);
+    setIsTimerRunning(true);
+  };
 
   // Handle answer selection
   const handleAnswerSelect = (questionIndex, answer) => {
@@ -48,47 +54,105 @@ const Quiz = () => {
       ...prev,
       [questionIndex]: answer,
     }));
-    setAnsweredCount((prev) => prev + 1);
+    setShowAnswer(true);
   };
 
   // Handle question completion and scoring
   const handleNextQuestion = () => {
-    // Increment score if the selected answer is correct
-    const currentQuestion = questions[answeredCount - 1];
-    const selectedAnswer = selectedAnswers[answeredCount - 1];
+    if (!selectedAnswers[answeredCount]) return;
+
+    const currentQuestion = questions[answeredCount];
+    if (!currentQuestion) return;
+
+    const selectedAnswer = selectedAnswers[answeredCount];
     const correctAnswer = currentQuestion.options.find(
       (option) => option.is_correct
-    );
+    )?.description;
 
-    if (selectedAnswer === correctAnswer.description) {
+    if (selectedAnswer === correctAnswer) {
       setScore((prev) => prev + 1);
     }
 
-    // Move to the next question
-    if (answeredCount === questions.length) {
-      setShowResults(true); // Show results when all questions are answered
+    if (answeredCount + 1 === questions.length) {
+      setShowResults(true);
+      setIsTimerRunning(false);
+    } else {
+      setAnsweredCount((prev) => prev + 1);
+      setTimer(30);
+      setIsTimerRunning(true);
+      setShowAnswer(false);
     }
   };
-
-  // Restart the quiz (reset all states)
+  // Restart the quiz
   const resetQuiz = () => {
+    setQuizStarted(false);
     setSelectedAnswers({});
     setTimer(30);
     setAnsweredCount(0);
     setScore(0);
     setShowResults(false);
-    setIsTimerRunning(true); // Start the timer again
+    setShowAnswer(false);
+    setIsTimerRunning(false);
   };
 
-  // Calculate progress as a percentage
-  const progress = (answeredCount / questions.length) * 100;
+  // Get cheerful message if no correct answers
+  const getCheerfulMessage = (score, totalQuestions) => {
+    if (score === 0) {
+      return "Don't worry! Every expert was once a beginner. Try again and you'll do better! 🚀💡";
+    }
+    return `Great job! You scored ${score} out of ${totalQuestions}. Keep improving! 🎯🔥`;
+  };
+
+  // Generate report card for analysis
+  const generateReportCard = () => {
+    return questions.map((question, index) => {
+      const userAnswer = selectedAnswers[index];
+      const correctAnswer = question.options.find(
+        (option) => option.is_correct
+      )?.description;
+      const isCorrect = userAnswer === correctAnswer;
+
+      return (
+        <div key={index} className="report-card-item">
+          <p>
+            <strong>
+              Q{index + 1}: {question.description}
+            </strong>
+          </p>
+          <p>
+            <strong>Your Answer:</strong>
+            <span className={isCorrect ? "correct-answer" : "wrong-answer"}>
+              {userAnswer}
+            </span>
+          </p>
+          <p>
+            <strong>Correct Answer:</strong>
+            <span className="correct-answer">{correctAnswer}</span>
+          </p>
+        </div>
+      );
+    });
+  };
+
+  const progress = questions.length
+    ? ((answeredCount + (showResults ? 1 : 0)) / questions.length) * 100
+    : 0;
 
   return (
     <div className="quiz-container">
-      <h2>Quiz Questions</h2>
+      <h2>Quiz App</h2>
+
       {loading ? (
         <p>Loading...</p>
-      ) : (
+      ) : !quizStarted ? (
+        // Show start screen before quiz begins
+        <div className="start-screen">
+          <h3>Welcome to the Quiz</h3>
+          <button className="start-button" onClick={startQuiz}>
+            Start Quiz
+          </button>
+        </div>
+      ) : !showResults ? (
         <>
           {/* Timer Section */}
           <div className="timer">
@@ -104,52 +168,75 @@ const Quiz = () => {
           {/* Quiz Questions */}
           {answeredCount < questions.length ? (
             <div>
+              <strong>{questions[answeredCount].description}</strong>
               <ul>
-                <li>
-                  <strong>{questions[answeredCount].description}</strong>
-                  <ul>
-                    {questions[answeredCount].options.map(
-                      (option, optionIndex) => (
-                        <li key={optionIndex}>
-                          <label>
-                            <input
-                              type="radio"
-                              name={`question-${answeredCount}`}
-                              value={option.description}
-                              checked={
-                                selectedAnswers[answeredCount] ===
-                                option.description
-                              }
-                              onChange={() =>
-                                handleAnswerSelect(
-                                  answeredCount,
-                                  option.description
-                                )
-                              }
-                            />
-                            {option.description}
-                          </label>
-                        </li>
-                      )
-                    )}
-                  </ul>
-                </li>
+                {questions[answeredCount].options.map((option, optionIndex) => {
+                  const isCorrect = option.is_correct;
+                  const isSelected =
+                    selectedAnswers[answeredCount] === option.description;
+
+                  return (
+                    <li
+                      key={optionIndex}
+                      className={
+                        showAnswer
+                          ? isCorrect
+                            ? "correct-answer"
+                            : isSelected
+                            ? "wrong-answer"
+                            : "option"
+                          : "option"
+                      }
+                    >
+                      <label>
+                        <input
+                          type="radio"
+                          name={`question-${answeredCount}`}
+                          value={option.description}
+                          checked={isSelected}
+                          onChange={() =>
+                            handleAnswerSelect(
+                              answeredCount,
+                              option.description
+                            )
+                          }
+                          disabled={showAnswer}
+                        />
+                        {option.description}
+                      </label>
+                    </li>
+                  );
+                })}
               </ul>
 
               {/* Next Question Button */}
-              <button onClick={handleNextQuestion}>Next Question</button>
+              <button
+                onClick={handleNextQuestion}
+                disabled={!selectedAnswers[answeredCount]}
+              >
+                {answeredCount + 1 === questions.length
+                  ? "Finish Quiz"
+                  : "Next Question"}
+              </button>
             </div>
-          ) : (
-            // Show Results
-            <div className="results">
-              <h3>Quiz Completed!</h3>
-              <p>
-                Your total score: {score}/{questions.length}
-              </p>
-              <button onClick={resetQuiz}>Restart Quiz</button>
-            </div>
-          )}
+          ) : null}
         </>
+      ) : (
+        // Show Results and Report Card
+        <div className="results">
+          <h3>Quiz Completed!</h3>
+          <p>
+            Your total score: {score}/{questions.length}
+          </p>
+          <p className="cheerful-message">
+            {getCheerfulMessage(score, questions.length)}
+          </p>
+          <div className="report-card">
+            <h4>Your Report Card:</h4>
+            {generateReportCard()}
+          </div>
+          <button onClick={resetQuiz}>Restart Quiz</button>
+        </div>
       )}
     </div>
   );
