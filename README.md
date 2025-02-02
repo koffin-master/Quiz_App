@@ -36,5 +36,5 @@ Welcome to the Quiz App! 🎮 This is a fun and interactive web-based quiz appli
 
 If you have any questions or suggestions, feel free to reach out to me!
 
-- **Email**: [](mdkhurshidrahmani@gmail.com)
-- **LinkedIn**: [](https://www.linkedin.com/in/khurshid-rahmani-66142021a/)
+- **Email**: [mdkhurshidrahmani@gmail.com]
+- **LinkedIn**: [https://www.linkedin.com/in/khurshid-rahmani-66142021a/]
