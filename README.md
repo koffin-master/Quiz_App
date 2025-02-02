@@ -31,3 +31,10 @@ Welcome to the Quiz App! 🎮 This is a fun and interactive web-based quiz appli
 • Restart Quiz: If you want to challenge yourself again, hit the Restart Quiz button and try for a higher score! 🔄
 
 🏆 Challenges Faced 1. CORS Issues: Initially, I ran into CORS issues when trying to fetch quiz data from the API 😅. Thankfully, I solved it by using a CORS proxy to bypass restrictions. 🚧 2. Timer Management: Ensuring the timer stops at 0 and automatically proceeds to the next question required some clever use of React’s hooks. ⏱️ 3. Scoring Logic: Implementing a way to accurately calculate the score based on multiple-choice answers was fun! 🎯
+
+## 📞 Contact
+
+If you have any questions or suggestions, feel free to reach out to me!
+
+- **Email**: [](mdkhurshidrahmani@gmail.com)
+- **LinkedIn**: [](https://www.linkedin.com/in/khurshid-rahmani-66142021a/)
