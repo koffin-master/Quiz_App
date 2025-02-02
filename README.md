@@ -7,12 +7,15 @@ Welcome to the Quiz App! 🎮 This is a fun and interactive web-based quiz appli
 • 📊 Progress Bar: Watch your progress grow as you answer questions—see how far you’ve come! 🏁
 • 🎯 Gamification: Track your score as you go! Can you get the highest score? 📈
 • 📝 Multiple-Choice Questions: Questions fetched from an API with multiple-choice answers. Pick the best answer and move on! ✅
+. 📄 Report Card (Analysis of answers)
 • 🏆 Results Summary: At the end, get your total score and see how you did! 🎉 Plus, you can restart the quiz anytime! 🔄
 
 🛠️ Technologies Used
 • React: The magic behind the frontend! ⚡
 • Axios: To fetch quiz data from the API. 📡
 • CSS: Giving it that sleek, clean look! ✨
+
+
 
 ✨ How It Works
 • Fetching Data: The app pulls quiz questions from https://api.jsonserve.com/Uw5CrX via Axios and displays them in a fun and interactive way. 🧠
